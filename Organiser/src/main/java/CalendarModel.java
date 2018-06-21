@@ -3,3 +3,5 @@
         selectedDay = cal.get(Calendar.DATE);
         loadEvents();
     }
+ 
+ public calendar() {}
