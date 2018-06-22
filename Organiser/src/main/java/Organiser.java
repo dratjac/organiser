@@ -53,9 +53,9 @@ public class Organiser {
 		JButton btnCalendar = new JButton("Event Calendar");
 		btnCalendar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				CalendarModel cm = new CalendarModel();
-		        CalendarView cv = new CalendarView(cm);
-		        cm.attach(cv);
+				//CalendarModel cm = new CalendarModel();
+		        //CalendarView cv = new CalendarView(cm);
+		        //cm.attach(cv);
 			}
 		});
 		btnCalendar.setBounds(10, 106, 199, 33);
@@ -74,6 +74,12 @@ public class Organiser {
 		frame.getContentPane().add(btnNewButton_1);
 		
 		JButton btnNewButton_2 = new JButton("Calculator");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Calculator calc = new Calculator();
+				calc.frame.setVisible(true);
+			}
+		});
 		btnNewButton_2.setBounds(210, 150, 214, 33);
 		frame.getContentPane().add(btnNewButton_2);
 	}
