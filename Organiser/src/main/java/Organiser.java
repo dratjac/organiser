@@ -76,7 +76,7 @@ public class Organiser {
 		JButton btnNewButton_2 = new JButton("Calculator");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Calculator calc = new Calculator();
+				Calculator calc = Calculator.getInstance();
 				calc.frame.setVisible(true);
 			}
 		});
