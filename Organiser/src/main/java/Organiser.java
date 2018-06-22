@@ -64,6 +64,10 @@ public class Organiser {
 		JButton btnNewButton = new JButton("Currency Converter");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				
+				
+				
 			}
 		});
 		btnNewButton.setBounds(210, 106, 214, 33);
