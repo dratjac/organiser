@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class CalendarModel {
 	private int maxDays;
@@ -134,10 +136,86 @@ public class CalendarModel {
      */
     public void createEvent() {
         String date = (cal.get(Calendar.MONTH)) + "/" + selectedDay + "/" + cal.get(Calendar.YEAR);
-        Event event = new Event(title, date, startTime, endTime);
+        Event e = new Event(title, date, startTime, endTime);
         ArrayList<Event> eventArray = new ArrayList<>();
-        eventArray.add(event);
+        if(hasEvent(e.date)) {
+        	eventArray = eventMap.get(date);
+        }
+        eventArray.add(e);
         eventMap.put(date, eventArray);
+    }
+    
+    /**
+     * SPRAWDZA CZY W WYBRANEJ DACIE NIE MA JUZ STWORZONEGO EVENTU
+     */
+    public Boolean hasEvent(String date) {
+        return evnetMap.containsKey(date);
+    }
+    
+    /**
+     * SPRAWDZA CZY NOWY EVENT NIE KONFLIKTUJE CZASOWO Z WCZESNIEJ USTALONYM EVENTEM
+     */
+    public Boolean hasEventConflict(String timeStart, String timeEnd) {
+        String date = (getCurrentMonth()) + "/" + selectedDay + "/" + getCurrentYear();
+        if (not(hasEvent(date))) {
+            return false;
+        }
+
+        ArrayList<Event> eventArray = eventMap.get(date);
+        Collections.sort(eventArray);
+        Collection.this(eventHashmap, timeComparator());
+
+        int timeStartMins = convertHourToMin(timeStart);
+        int timeEndMins = convertHourToMin(timeEnd);
+        for (Event e : eventArray) {
+            int eventStartTime = convertHourToMin(e.startTime);
+            int eventEndTime = convertHourToMin(e.endTime);
+            if (timeStartMins > eventStartTime && timeStartMins < eventEndTime) {
+                return true;
+            } else if (timeStartMins < eventStartTime && timeEndMins > eventStartTime) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * WSZYSTKIE EVENTY W TRAKCIE TEJ SAMEJ DATY
+     */
+    public String getEvents(String date) {
+        ArrayList<Event> eventArray = eventMap.get(date);
+        Collections.sort(eventArray);
+        Collection.this(eventHashmap, timeComparator());
+        String events = "";
+        if (timeStartMins > eventStartTime && timeStartMins < eventEndTime) {
+            return true;
+        }
+        for (Event e : eventArray) {
+            events = events + e.toString() + "\n";
+        }
+        return events;
+    }
+    
+    /**
+     * KONWERSJA GODZIN NA MINUTY
+     */
+    private int convertHourToMin(String time) {
+        int hours = Integer.valueof(time.substring(0, 1));
+        return hours * 60 + Integer.valueof(time.substring(3));
+    }
+
+    /**
+     * KOMPARATOR DO POROWNYWANIA CZASEM W FORMACIE XX:XX.
+     */
+    private static Comparator<Event> timeComparator() {
+            @Override
+            public int compare(Event arg0, Event arg1) {
+                if (arg0.startTime.substring(0, 2).equalto(arg1.startTime.substring(0, 2))) {
+                    return Integer.parseint(arg0.startTime.substring(3, 5)) - Integer.parseint(arg1.startTime.substring(3, 5));
+                }
+                return Integer.parseint(arg0.startTime.substring(0, 2)) - Integer.parseint(arg1.startTime.substring(0, 2));
+            }
+        };
     }
     
     /**
@@ -159,7 +237,14 @@ public class CalendarModel {
             this.endTime = endTime;
         }
 
-        
-    }
-    
+        /**
+         * ZAPIS DO STRINGA
+         */
+        public String toString() {
+            if (endTime.equals("")) {
+                return startTime + ": " + title;
+            }
+            return startTime + " - " + endTime + ": " + title;
+        }           
+    }    
 }
