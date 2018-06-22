@@ -8,6 +8,10 @@ public class CalendarModel {
 	private boolean monthChanged = false;
 	 
 	/**
+	* ========================== DO KALENDARZA =========================
+	*/
+	
+	/**
 	* KONSTRUKTOR
 	*/
 	public CalendarModel() {
@@ -103,6 +107,22 @@ public class CalendarModel {
         //update();                                                         
     }
 
+    /**
+     * SPRAWDZA CZY USER ZMIENIL MIESIAC
+     */
+    public boolean hasMonthChanged() {
+        return monthChanged;
+    }
 
+    /**
+     * USTAWIA monthChanged NA FALSE
+     */
+    public void resetHasMonthChanged() {
+        monthChanged = false;
+    }
+    
+    /**
+	* ========================== DO EVENTOW ==============================
+	*/
 	    
 }
