@@ -51,21 +51,10 @@ public class Organiser {
 		frame.getContentPane().add(lblOrganiser);
 		
 		JButton btnCalendar = new JButton("Event Calendar");
-		btnCalendar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				CalendarModel cm = new CalendarModel();
-		        CalendarView cv = new CalendarView(cm);
-		        cm.attach(cv);
-			}
-		});
 		btnCalendar.setBounds(10, 106, 199, 33);
 		frame.getContentPane().add(btnCalendar);
 		
 		JButton btnNewButton = new JButton("Currency Converter");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnNewButton.setBounds(210, 106, 214, 33);
 		frame.getContentPane().add(btnNewButton);
 		
