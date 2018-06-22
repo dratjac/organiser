@@ -1,17 +1,11 @@
 
 public class DoubleNumb extends Numbers {
-	private double value;
 	
-	public DoubleNumb() {
-		super();
+	public DoubleNumb(String num) {
+		super(num);
 	}
 	
-	public void setNum() {
-		value = Double.parseDouble(Calculator.textField.getText());
+	public void Parse() {
+		value = Double.parseDouble(number);
 	}
-	
-	public double getNum() {
-		return value;
-	}
-
 }

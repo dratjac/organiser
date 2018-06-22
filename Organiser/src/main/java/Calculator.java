@@ -37,22 +37,57 @@ public class Calculator {
 	private JButton button_plus;
 	private JButton button_eq;
 	
-	private Numbers firstnum = new DoubleNumb();
-	private Numbers secnum = new DoubleNumb();
+	//private Numbers firstnum = new DoubleNumb();
+	//private Numbers secnum = new DoubleNumb();
 	//private String operation;
 	private int state = 0;
 	
-	private Boolean porown = false, con = false, podzial = false, dec=true, bin=false, hex=false;
+	private Boolean porown = false, con = false, podzial = false;
     private String ls = "";
     private String input = "";
-    private String operand1 = "";
-    private String operand2 = "";
+    private Numbers operand1 = new DoubleNumb("");
+    private Numbers operand2 = new DoubleNumb("");
     private double result = 0.0;
     private char operation;
-    private void display(String i)
-    {
+    
+    private void display(String i) {
         if (textField.getText().equals("0")) textField.setText("");
         textField.setText(textField.getText() + i);
+    }
+    
+    private void rownanie() {
+    	textField.setText("");
+        input = "";
+        double num1, num2;
+        operand1.Parse();
+        operand2.Parse();
+        num1 = operand1.getNumD();
+        num2 = operand2.getNumD();
+        
+        switch (operation) {
+        case '/':
+        	if (num2 != 0) {
+        		result = num1 / num2;
+                display(""+result);
+            }
+            else {
+            	display("Can't divide by 0!");
+            }
+            break;
+        case '*':
+        	result = num1 * num2;
+        	display(""+result);
+            break;
+        case '+':
+            result = num1 + num2;
+            display(""+result);
+            break;
+        case '-':
+            result = num1 - num2;
+            display(""+result);
+            break;
+        }
+        input = ""+result;
     }
 
 	/**
@@ -261,21 +296,80 @@ public class Calculator {
 		button_plus = new JButton("+");
 		button_plus.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				if (podzial == true)
+	            {
+	                operand2.setNumber(input);
+	                rownanie();
+	                operand1.Empty();
+	            }
+	            if (porown != true) operand1.setNumber(input);
+	            input = "";
+	            display("+");
+	            operation = '+';
+	            con = false;
+	            podzial = true;
 			}
 		});
 		button_plus.setBounds(198, 300, 50, 50);
 		frame.getContentPane().add(button_plus);
 		
 		button_minus = new JButton("-");
+		button_minus.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (podzial == true)
+	            {
+	                operand2.setNumber(input);
+	                rownanie();
+	                operand1.Empty();
+	            }
+	            if (porown != true) operand1.setNumber(input);
+	            input = "";
+	            display("-");
+	            operation = '-';
+	            con = false;
+	            podzial = true;
+			}
+		});
 		button_minus.setBounds(198, 237, 50, 50);
 		frame.getContentPane().add(button_minus);
 		
 		button_mult = new JButton("*");
+		button_mult.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (podzial == true)
+	            {
+	                operand2.setNumber(input);
+	                rownanie();
+	                operand1.Empty();
+	            }
+	            if (porown != true) operand1.setNumber(input);
+	            input = "";
+	            display("*");
+	            operation = '*';
+	            con = false;
+	            podzial = true;
+			}
+		});
 		button_mult.setBounds(198, 174, 50, 50);
 		frame.getContentPane().add(button_mult);
 		
 		button_div = new JButton("/");
+		button_div.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (podzial == true)
+	            {
+	                operand2.setNumber(input);
+	                rownanie();
+	                operand1.Empty();
+	            }
+	            if (porown != true) operand1.setNumber(input);
+	            input = "";
+	            display("/");
+	            operation = '/';
+	            con = false;
+	            podzial = true;
+			}
+		});
 		button_div.setBounds(198, 111, 50, 50);
 		frame.getContentPane().add(button_div);
 		
@@ -319,13 +413,25 @@ public class Calculator {
 		frame.getContentPane().add(button_opp);
 		
 		button_C = new JButton("C");
+		button_C.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+	            input = "";
+	            operand1 = "";
+	            operand2 = "";
+	            textField.setText("0");
+	            porown = false;
+	            con = false;
+	            podzial = false;
+			}
+		});
 		button_C.setBounds(136, 48, 50, 50);
 		frame.getContentPane().add(button_C);
 		
 		button_Ce = new JButton("CE");
 		button_Ce.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textField.setText("");
+				textField.setText("0");
+				input = "";
 			}
 		});
 		button_Ce.setBounds(74, 48, 50, 50);
