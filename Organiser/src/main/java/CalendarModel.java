@@ -1,9 +1,13 @@
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 public class CalendarModel {
 	private int maxDays;
 	private int selectedDay;
+	private HashMap<String, ArrayList<Event>> eventMap = new HashMap<>();
+	private ArrayList<string> listeners = new ArrayList<>(); 
 	private GregorianCalendar cal = new GregorianCalendar();
 	private boolean monthChanged = false;
 	 
@@ -125,4 +129,37 @@ public class CalendarModel {
 	* ========================== DO EVENTOW ==============================
 	*/
 	    
+    /**
+     * TWORZY EVENT W WYBRANYM DNIU
+     */
+    public void createEvent() {
+        String date = (cal.get(Calendar.MONTH)) + "/" + selectedDay + "/" + cal.get(Calendar.YEAR);
+        Event event = new Event(title, date, startTime, endTime);
+        ArrayList<Event> eventArray = new ArrayList<>();
+        eventArray.add(event);
+        eventMap.put(date, eventArray);
+    }
+    
+    /**
+     * TWORZENIE EVENTU
+     */
+    private static class Event{
+        private String title;
+        private String date;
+        private String startTime;
+        private String endTime;
+
+        /**
+        * KONSTRUKTOR
+        */
+        private Event(String title, String date, String startTime, String endTime) {
+            this.title = title;
+            this.date = date;
+            this.startTime = startTime;
+            this.endTime = endTime;
+        }
+
+        
+    }
+    
 }
