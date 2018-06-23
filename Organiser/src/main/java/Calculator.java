@@ -11,7 +11,7 @@ import java.awt.Font;
 
 public class Calculator {
 
-	JFrame frame;
+	JFrame frmCalculator;
 	static JTextField textField;
 	private JButton button_sqrt;
 	private JButton button_opp;
@@ -135,7 +135,7 @@ public class Calculator {
 			public void run() {
 				try {
 					Calculator window = new Calculator();
-					window.frame.setVisible(true);
+					window.frmCalculator.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -162,17 +162,18 @@ public class Calculator {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 342, 423);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmCalculator = new JFrame();
+		frmCalculator.setTitle("Calculator");
+		frmCalculator.setBounds(100, 100, 342, 423);
+		frmCalculator.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmCalculator.getContentPane().setLayout(null);
 		
 		textField = new JTextField();
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textField.setHorizontalAlignment(SwingConstants.RIGHT);
 		textField.setEditable(false);
 		textField.setBounds(12, 13, 298, 22);
-		frame.getContentPane().add(textField);
+		frmCalculator.getContentPane().add(textField);
 		textField.setColumns(10);
 		textField.setText("0");
 		
@@ -191,7 +192,7 @@ public class Calculator {
 			}
 		});
 		button_0.setBounds(12, 300, 112, 50);
-		frame.getContentPane().add(button_0);
+		frmCalculator.getContentPane().add(button_0);
 		
 		button_1 = new JButton("1");
 		button_1.addActionListener(new ActionListener() {
@@ -208,7 +209,7 @@ public class Calculator {
 			}
 		});
 		button_1.setBounds(12, 237, 50, 50);
-		frame.getContentPane().add(button_1);
+		frmCalculator.getContentPane().add(button_1);
 		
 		button_2 = new JButton("2");
 		button_2.addActionListener(new ActionListener() {
@@ -225,7 +226,7 @@ public class Calculator {
 			}
 		});
 		button_2.setBounds(74, 237, 50, 50);
-		frame.getContentPane().add(button_2);
+		frmCalculator.getContentPane().add(button_2);
 		
 		button_3 = new JButton("3");
 		button_3.addActionListener(new ActionListener() {
@@ -242,7 +243,7 @@ public class Calculator {
 			}
 		});
 		button_3.setBounds(136, 237, 50, 50);
-		frame.getContentPane().add(button_3);
+		frmCalculator.getContentPane().add(button_3);
 		
 		button_4 = new JButton("4");
 		button_4.addActionListener(new ActionListener() {
@@ -259,7 +260,7 @@ public class Calculator {
 			}
 		});
 		button_4.setBounds(12, 174, 50, 50);
-		frame.getContentPane().add(button_4);
+		frmCalculator.getContentPane().add(button_4);
 		
 		button_5 = new JButton("5");
 		button_5.addActionListener(new ActionListener() {
@@ -276,7 +277,7 @@ public class Calculator {
 			}
 		});
 		button_5.setBounds(74, 174, 50, 50);
-		frame.getContentPane().add(button_5);
+		frmCalculator.getContentPane().add(button_5);
 		
 		button_6 = new JButton("6");
 		button_6.addActionListener(new ActionListener() {
@@ -293,7 +294,7 @@ public class Calculator {
 			}
 		});
 		button_6.setBounds(136, 174, 50, 50);
-		frame.getContentPane().add(button_6);
+		frmCalculator.getContentPane().add(button_6);
 		
 		button_7 = new JButton("7");
 		button_7.addActionListener(new ActionListener() {
@@ -310,7 +311,7 @@ public class Calculator {
 			}
 		});
 		button_7.setBounds(12, 111, 50, 50);
-		frame.getContentPane().add(button_7);
+		frmCalculator.getContentPane().add(button_7);
 		
 		button_8 = new JButton("8");
 		button_8.addActionListener(new ActionListener() {
@@ -327,7 +328,7 @@ public class Calculator {
 			}
 		});
 		button_8.setBounds(74, 111, 50, 50);
-		frame.getContentPane().add(button_8);
+		frmCalculator.getContentPane().add(button_8);
 		
 		button_9 = new JButton("9");
 		button_9.addActionListener(new ActionListener() {
@@ -344,7 +345,7 @@ public class Calculator {
 			}
 		});
 		button_9.setBounds(136, 111, 50, 50);
-		frame.getContentPane().add(button_9);
+		frmCalculator.getContentPane().add(button_9);
 		
 		button_plus = new JButton("+");
 		button_plus.addActionListener(new ActionListener() {
@@ -364,7 +365,7 @@ public class Calculator {
 			}
 		});
 		button_plus.setBounds(198, 300, 50, 50);
-		frame.getContentPane().add(button_plus);
+		frmCalculator.getContentPane().add(button_plus);
 		
 		button_minus = new JButton("-");
 		button_minus.addActionListener(new ActionListener() {
@@ -384,7 +385,7 @@ public class Calculator {
 			}
 		});
 		button_minus.setBounds(198, 237, 50, 50);
-		frame.getContentPane().add(button_minus);
+		frmCalculator.getContentPane().add(button_minus);
 		
 		button_mult = new JButton("*");
 		button_mult.addActionListener(new ActionListener() {
@@ -404,7 +405,7 @@ public class Calculator {
 			}
 		});
 		button_mult.setBounds(198, 174, 50, 50);
-		frame.getContentPane().add(button_mult);
+		frmCalculator.getContentPane().add(button_mult);
 		
 		button_div = new JButton("/");
 		button_div.addActionListener(new ActionListener() {
@@ -424,7 +425,7 @@ public class Calculator {
 			}
 		});
 		button_div.setBounds(198, 111, 50, 50);
-		frame.getContentPane().add(button_div);
+		frmCalculator.getContentPane().add(button_div);
 		
 		button_eq = new JButton("=");
 		button_eq.addActionListener(new ActionListener() {
@@ -442,7 +443,7 @@ public class Calculator {
 			}
 		});
 		button_eq.setBounds(260, 237, 50, 113);
-		frame.getContentPane().add(button_eq);
+		frmCalculator.getContentPane().add(button_eq);
 		
 		button_inv = new JButton("1/x");
 		button_inv.addActionListener(new ActionListener() {
@@ -461,7 +462,7 @@ public class Calculator {
 		});
 		button_inv.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		button_inv.setBounds(260, 174, 50, 50);
-		frame.getContentPane().add(button_inv);
+		frmCalculator.getContentPane().add(button_inv);
 		
 		button_perc = new JButton("%");
 		button_perc.addActionListener(new ActionListener() {
@@ -501,7 +502,7 @@ public class Calculator {
 			}
 		});
 		button_perc.setBounds(260, 111, 50, 50);
-		frame.getContentPane().add(button_perc);
+		frmCalculator.getContentPane().add(button_perc);
 			
 		button_sqrt = new JButton("\u221A");
 		button_sqrt.addActionListener(new ActionListener() {
@@ -519,7 +520,7 @@ public class Calculator {
 			}
 		});
 		button_sqrt.setBounds(260, 48, 50, 50);
-		frame.getContentPane().add(button_sqrt);
+		frmCalculator.getContentPane().add(button_sqrt);
 		
 		button_opp = new JButton("+/-");
 		button_opp.addActionListener(new ActionListener() {
@@ -535,7 +536,7 @@ public class Calculator {
 			}
 		});
 		button_opp.setBounds(198, 48, 50, 50);
-		frame.getContentPane().add(button_opp);
+		frmCalculator.getContentPane().add(button_opp);
 		
 		button_C = new JButton("C");
 		button_C.addActionListener(new ActionListener() {
@@ -550,7 +551,7 @@ public class Calculator {
 			}
 		});
 		button_C.setBounds(136, 48, 50, 50);
-		frame.getContentPane().add(button_C);
+		frmCalculator.getContentPane().add(button_C);
 		
 		button_Ce = new JButton("CE");
 		button_Ce.addActionListener(new ActionListener() {
@@ -561,7 +562,7 @@ public class Calculator {
 			}
 		});
 		button_Ce.setBounds(74, 48, 50, 50);
-		frame.getContentPane().add(button_Ce);
+		frmCalculator.getContentPane().add(button_Ce);
 		
 		button_back = new JButton("\u2190");
 		button_back.addActionListener(new ActionListener() {
@@ -587,7 +588,7 @@ public class Calculator {
 			}
 		});
 		button_back.setBounds(12, 48, 50, 50);
-		frame.getContentPane().add(button_back);
+		frmCalculator.getContentPane().add(button_back);
 		
 		button_col = new JButton(".");
 		button_col.addActionListener(new ActionListener() {
@@ -601,6 +602,6 @@ public class Calculator {
 			}
 		});
 		button_col.setBounds(136, 300, 50, 50);
-		frame.getContentPane().add(button_col);
+		frmCalculator.getContentPane().add(button_col);
 	}
 }

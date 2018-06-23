@@ -77,7 +77,7 @@ public class Organiser {
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Calculator calc = Calculator.getInstance();
-				calc.frame.setVisible(true);
+				calc.frmCalculator.setVisible(true);
 			}
 		});
 		btnNewButton_2.setBounds(210, 150, 214, 33);
