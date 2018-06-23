@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
+import java.math.BigDecimal;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import java.awt.Font;
@@ -37,37 +37,37 @@ public class Calculator {
 	private JButton button_plus;
 	private JButton button_eq;
 	
-	//private Numbers firstnum = new DoubleNumb();
-	//private Numbers secnum = new DoubleNumb();
-	//private String operation;
-	private int state = 0;
-	
 	private Boolean porown = false, con = false, podzial = false;
-    private String ls = "";
-    private String input = "";
+    private String input = "0";
     private Numbers operand1 = new DoubleNumb("");
     private Numbers operand2 = new DoubleNumb("");
-    private double result = 0.0;
+    private double result;
     private char operation;
     
     private void display(String i) {
-        if (textField.getText().equals("0")) textField.setText("");
+        if (textField.getText().equals("0") && con == false) textField.setText("");
         textField.setText(textField.getText() + i);
     }
     
     private void rownanie() {
     	textField.setText("");
-        input = "";
-        double num1, num2;
+        input = "0";
         operand1.Parse();
         operand2.Parse();
-        num1 = operand1.getNumD();
-        num2 = operand2.getNumD();
+        BigDecimal num1 = new BigDecimal(operand1.getNumD());
+        BigDecimal num2 = new BigDecimal(operand2.getNumD());
+        int index1 = operand1.number.indexOf('.');
+		int index2 = operand2.number.indexOf('.');
+		int places = 0;
+		int places2 = 0;
+		int maxx;
+        //num1 = operand1.getNumD();
+        //num2 = operand2.getNumD();
         
         switch (operation) {
         case '/':
-        	if (num2 != 0) {
-        		result = num1 / num2;
+        	if (num2.doubleValue() != 0) {
+        		result = num1.divide(num2, 10, BigDecimal.ROUND_HALF_UP).doubleValue();
                 display(""+result);
             }
             else {
@@ -75,15 +75,52 @@ public class Calculator {
             }
             break;
         case '*':
-        	result = num1 * num2;
+        	//result = num1 * num2;
+    		if(index1 >= 0) {
+	    		for(int i=index1+1;i<operand1.number.length();i++) {
+	    			places++;
+	    		}
+    		}
+    		if(index2 >= 0) {
+	    		for(int i=index2+1;i<operand2.number.length();i++) {
+	    			places++;
+	    		}
+    		}
+        	result = num1.multiply(num2).setScale(places, BigDecimal.ROUND_HALF_UP).doubleValue();
         	display(""+result);
+        	//System.out.println(num1.precision());
             break;
         case '+':
-            result = num1 + num2;
+            //result = num1 + num2;   	
+    		if(index1 >= 0) {
+	    		for(int i=index1+1;i<operand1.number.length();i++) {
+	    			places++;
+	    		}
+    		}
+    		if(index2 >= 0) {
+	    		for(int i=index2+1;i<operand2.number.length();i++) {
+	    			places2++;
+	    		}
+    		}
+    		maxx = Math.max(places, places2);
+        	result = num1.add(num2).setScale(maxx, BigDecimal.ROUND_HALF_UP).doubleValue();
+        	//result = num1.add(num2).doubleValue();
             display(""+result);
             break;
         case '-':
-            result = num1 - num2;
+            //result = num1 - num2;
+        	if(index1 >= 0) {
+	    		for(int i=index1+1;i<operand1.number.length();i++) {
+	    			places++;
+	    		}
+    		}
+    		if(index2 >= 0) {
+	    		for(int i=index2+1;i<operand2.number.length();i++) {
+	    			places2++;
+	    		}
+    		}
+    		maxx = Math.max(places, places2);
+        	result = num1.subtract(num2).setScale(maxx, BigDecimal.ROUND_HALF_UP).doubleValue();
             display(""+result);
             break;
         }
@@ -142,7 +179,14 @@ public class Calculator {
 		button_0 = new JButton("0");
 		button_0.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				display("0");
+				if (porown == true)
+	            {
+	                textField.setText("");
+	                input = "";
+	                porown = false;
+	            }
+	            display("0");
+	            if(input.equals("0")) input = "";
 	            input += "0";
 			}
 		});
@@ -159,6 +203,7 @@ public class Calculator {
 	                porown = false;
 	            }
 	            display("1");
+	            if(input.equals("0")) input = "";
 	            input += "1";
 			}
 		});
@@ -175,6 +220,7 @@ public class Calculator {
 	                porown = false;
 	            }
 	            display("2");
+	            if(input.equals("0")) input = "";
 	            input += "2";
 			}
 		});
@@ -191,6 +237,7 @@ public class Calculator {
 	                porown = false;
 	            }
 	            display("3");
+	            if(input.equals("0")) input = "";
 	            input += "3";
 			}
 		});
@@ -207,6 +254,7 @@ public class Calculator {
 	                porown = false;
 	            }
 	            display("4");
+	            if(input.equals("0")) input = "";
 	            input += "4";
 			}
 		});
@@ -223,6 +271,7 @@ public class Calculator {
 	                porown = false;
 	            }
 	            display("5");
+	            if(input.equals("0")) input = "";
 	            input += "5";
 			}
 		});
@@ -239,6 +288,7 @@ public class Calculator {
 	                porown = false;
 	            }
 	            display("6");
+	            if(input.equals("0")) input = "";
 	            input += "6";
 			}
 		});
@@ -255,6 +305,7 @@ public class Calculator {
 	                porown = false;
 	            }
 	            display("7");
+	            if(input.equals("0")) input = "";
 	            input += "7";
 			}
 		});
@@ -271,6 +322,7 @@ public class Calculator {
 	                porown = false;
 	            }
 	            display("8");
+	            if(input.equals("0")) input = "";
 	            input += "8";
 			}
 		});
@@ -287,6 +339,7 @@ public class Calculator {
 	                porown = false;
 	            }
 	            display("9");
+	            if(input.equals("0")) input = "";
 	            input += "9";
 			}
 		});
@@ -298,12 +351,12 @@ public class Calculator {
 			public void actionPerformed(ActionEvent e) {
 				if (podzial == true)
 	            {
-	                operand2.setNumber(input);
+	                operand2.setStrNumber(input);
 	                rownanie();
 	                operand1.Empty();
 	            }
-	            if (porown != true) operand1.setNumber(input);
-	            input = "";
+	            if (porown != true) operand1.setStrNumber(input);
+	            input = "0";
 	            display("+");
 	            operation = '+';
 	            con = false;
@@ -318,12 +371,12 @@ public class Calculator {
 			public void actionPerformed(ActionEvent e) {
 				if (podzial == true)
 	            {
-	                operand2.setNumber(input);
+	                operand2.setStrNumber(input);
 	                rownanie();
 	                operand1.Empty();
 	            }
-	            if (porown != true) operand1.setNumber(input);
-	            input = "";
+	            if (porown != true) operand1.setStrNumber(input);
+	            input = "0";
 	            display("-");
 	            operation = '-';
 	            con = false;
@@ -338,12 +391,12 @@ public class Calculator {
 			public void actionPerformed(ActionEvent e) {
 				if (podzial == true)
 	            {
-	                operand2.setNumber(input);
+	                operand2.setStrNumber(input);
 	                rownanie();
 	                operand1.Empty();
 	            }
-	            if (porown != true) operand1.setNumber(input);
-	            input = "";
+	            if (porown != true) operand1.setStrNumber(input);
+	            input = "0";
 	            display("*");
 	            operation = '*';
 	            con = false;
@@ -358,12 +411,12 @@ public class Calculator {
 			public void actionPerformed(ActionEvent e) {
 				if (podzial == true)
 	            {
-	                operand2.setNumber(input);
+	                operand2.setStrNumber(input);
 	                rownanie();
 	                operand1.Empty();
 	            }
-	            if (porown != true) operand1.setNumber(input);
-	            input = "";
+	            if (porown != true) operand1.setStrNumber(input);
+	            input = "0";
 	            display("/");
 	            operation = '/';
 	            con = false;
@@ -374,6 +427,20 @@ public class Calculator {
 		frame.getContentPane().add(button_div);
 		
 		button_eq = new JButton("=");
+		button_eq.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if (porown != true){
+					operand2.setStrNumber(input);
+		        }
+				if(operand1.number != "" %% operand2.number != "") {
+		            rownanie();
+		            operand1.setStrNumber(input);
+		            porown = true;
+		            con = false;
+		            podzial = false;    
+				}
+			}
+		});
 		button_eq.setBounds(260, 237, 50, 113);
 		frame.getContentPane().add(button_eq);
 		
@@ -387,25 +454,36 @@ public class Calculator {
 		frame.getContentPane().add(button_perc);
 			
 		button_sqrt = new JButton("\u221A");
+		button_sqrt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textField.setText("");
+				Numbers num1 = new DoubleNumb(input);
+				num1.Parse();
+	
+	            //double num1;
+	            //double.TryParse(input, out num1);
+	            double num2 = Math.sqrt(num1.getNumD());
+	            display(""+num2);
+	            input = ""+num2;
+	            operand1.setStrNumber(input);
+	            porown = true;
+	            con = false;
+	            podzial = false;
+			}
+		});
 		button_sqrt.setBounds(260, 48, 50, 50);
 		frame.getContentPane().add(button_sqrt);
 		
 		button_opp = new JButton("+/-");
 		button_opp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String[] ary = textField.getText().split("");
-				if(ary[0].equals("-")) {					
-					//textField.setText(Arrays.toString(Arrays.copyOfRange(ary, 1, ary.length), ""));
-					String[] ar2 = Arrays.copyOfRange(ary, 1, ary.length);
-					String ar3 = new String();
-					for(int i=0;i<ar2.length;i++) {
-						ar3+=ar2[i];
-					}
-					//System.out.println(ar3);
-					textField.setText(ar3);
+				if(input.indexOf('-') >= 0) {
+					input = input.substring(1);
+					textField.setText(input);
 				}
 				else {
-					textField.setText("-"+textField.getText());
+					input = "-"+input;
+					textField.setText(input);
 				}
 			}
 		});
@@ -415,9 +493,9 @@ public class Calculator {
 		button_C = new JButton("C");
 		button_C.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-	            input = "";
-	            operand1 = "";
-	            operand2 = "";
+	            input = "0";
+	            operand1.Empty();
+	            operand2.Empty();
 	            textField.setText("0");
 	            porown = false;
 	            con = false;
@@ -431,23 +509,39 @@ public class Calculator {
 		button_Ce.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textField.setText("0");
-				input = "";
+				input = "0";
+				con = false;
 			}
 		});
 		button_Ce.setBounds(74, 48, 50, 50);
 		frame.getContentPane().add(button_Ce);
 		
 		button_back = new JButton("\u2190");
+		button_back.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		button_back.setBounds(12, 48, 50, 50);
 		frame.getContentPane().add(button_back);
 		
 		button_col = new JButton(".");
+		button_col.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (con == false)
+	            {
+					con = true;
+	                display(".");
+	                input += ".";
+	            }
+			}
+		});
 		button_col.setBounds(136, 300, 50, 50);
 		frame.getContentPane().add(button_col);
 	}
 	
-	private void rememberNumber() {
+	//private void rememberNumber() {
 		//remembered = Double.parseDouble(textField.getText());
 		//System.out.println(remembered);
-	}
+	//}
 }

@@ -19,11 +19,17 @@ public class Numbers {
 	public void Parse() {
 	}
 	
+	public void setDNumber(double num) {	
+	}
+	
 	public double getNumD() {
 		return this.value;
 	}
 	
-	public void setNumber(String num) {
+	public void setStrNumber(String num) {
+		if(num.charAt(num.length()-1) == '.') {
+			num = num.substring(0, num.length()-1);
+		}
 		this.number = num;
 	}
 }
