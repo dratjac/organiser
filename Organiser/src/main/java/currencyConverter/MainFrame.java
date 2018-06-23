@@ -1,9 +1,7 @@
 package currencyConverter;
 
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-import CurrencyConverter;
 import javax.swing.JLabel;
 import java.awt.Color;
 import javax.swing.SwingConstants;
@@ -15,6 +13,10 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+
 public class MainFrame {
 
 	private JFrame frame;
@@ -39,7 +41,34 @@ public class MainFrame {
 			}
 		});
 	}
+	
+	private static String convert(String from, String to, String amount) {
+		try {
+			URL url = new URL("http://free.currencyconverterapi.com/api/v5/convert?q="+from+"_"+to+"&compact=y");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+            String line = reader.readLine();
+            if (line.length() > 0) {
+            	String [] parts = line.split("l");
+            	String part2 = parts[1];
+            	String[] value =part2.split(":");
+            	value[1]=value[1].replaceAll("}", "");
+            	 
+            	
+            	return  Double.toString(Double.parseDouble(value[1]) * Double.parseDouble(amount));
+            }
+            reader.close();
+            
+		}
+		catch(Exception e) {
+			return e.getMessage();
+			
+		}
+		return null;
+		
+		
+	}
 
+	
 	/**
 	 * Create the application.
 	 */
@@ -92,11 +121,11 @@ public class MainFrame {
 		lblNewLabel_2.setBounds(38, 189, 90, 14);
 		frame.getContentPane().add(lblNewLabel_2);
 		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"PLN", "USD", "GBN", "EUR", "CHF"}));
-		comboBox_1.setEditable(true);
-		comboBox_1.setBounds(168, 186, 86, 20);
-		frame.getContentPane().add(comboBox_1);
+		JComboBox comboBox2 = new JComboBox();
+		comboBox2.setModel(new DefaultComboBoxModel(new String[] {"PLN", "USD", "GBN", "EUR", "CHF"}));
+		comboBox2.setEditable(true);
+		comboBox2.setBounds(168, 186, 86, 20);
+		frame.getContentPane().add(comboBox2);
 		
 		JLabel lblNewLabel_3 = new JLabel("Result");
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
@@ -113,11 +142,7 @@ public class MainFrame {
 		JButton convertButton = new JButton("Convert");
 		convertButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				
-				
-				
-				
+				resultField.setText(convert(comboBox.getSelectedItem().toString(), comboBox2.getSelectedItem().toString(), amountField.getText()));
 				
 			}
 		});

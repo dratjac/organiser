@@ -13,15 +13,14 @@ public class test2 {
 	            String line = reader.readLine();
 	            if (line.length() > 0) {
 	            	String [] parts = line.split("l");
-	            	String part1 = parts[0];
 	            	String part2 = parts[1];
-	            	String[] x =part2.split(":");
-	            	x[1]=x[1].replaceAll("}", "");
-	            	//part2.split()
-	            	String [] str =line.split(":")[0].split(":");
-	            	 System.out.println(str[1]);
+	            	String[] value =part2.split(":");
+	            	value[1]=value[1].replaceAll("}", "");
+	            	Double ratio = Double.parseDouble(value[1]);
+	            	System.out.println(Double.parseDouble(value[1]) * 5); 
 	            }
 	            reader.close();
+	            
 	        } catch (Exception e) {
 	            System.out.println(e.getMessage());
 	        }
