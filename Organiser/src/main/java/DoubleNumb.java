@@ -7,7 +7,7 @@ public class DoubleNumb extends Numbers {
 	
 	public void Parse() {
 		value = Double.parseDouble(number);
-		//System.out.println("Parsing " + number + "\n Parsed: "+value);
+		System.out.println("Parsing " + number + "\n Parsed: "+value);
 	}
 	
 	public void setDnumber(double num) {

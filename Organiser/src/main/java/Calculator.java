@@ -466,7 +466,38 @@ public class Calculator {
 		button_perc = new JButton("%");
 		button_perc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				if(podzial == true) {
+					Numbers percent = new DoubleNumb(input);
+					percent.Parse();
+					//System.out.print(10.0/100.0);
+					System.out.println(percent.getNumD());
+					System.out.println("   ");
+					double x = percent.value/100.0;
+					System.out.println(x+"    ");
+					percent.setDNumber(x);
+					System.out.println(percent.getNumD());
+					
+					operand1.Parse();
+					BigDecimal num1 = new BigDecimal(operand1.getNumD());
+					BigDecimal num2 = new BigDecimal(percent.getNumD());
+					int index1 = operand1.number.indexOf('.');
+					int index2 = percent.number.indexOf('.');
+					int places = 0;					
+					if(index1 >= 0) {
+			    		for(int i=index1+1;i<operand1.number.length();i++) {
+			    			places++;
+			    		}
+		    		}
+		    		if(index2 >= 0) {
+			    		for(int i=index2+1;i<percent.number.length();i++) {
+			    			places++;
+			    		}
+		    		}
+		    		places+=2;
+		        	result = num1.multiply(num2).setScale(places, BigDecimal.ROUND_HALF_UP).doubleValue();
+		        	input = Double.toString(result);
+		        	textField.setText(input);
+				}
 			}
 		});
 		button_perc.setBounds(260, 111, 50, 50);

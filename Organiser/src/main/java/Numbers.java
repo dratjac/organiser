@@ -19,7 +19,8 @@ public class Numbers {
 	public void Parse() {
 	}
 	
-	public void setDNumber(double num) {	
+	public void setDNumber(double num) {
+		this.value = num;
 	}
 	
 	public double getNumD() {
