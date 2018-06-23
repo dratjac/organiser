@@ -134,7 +134,7 @@ public class CalendarModel {
     /**
      * TWORZY EVENT W WYBRANYM DNIU
      */
-    public void createEvent() {
+    public void createEvent(String title, String startTime, String endTime) {
         String date = (cal.get(Calendar.MONTH)) + "/" + selectedDay + "/" + cal.get(Calendar.YEAR);
         Event e = new Event(title, date, startTime, endTime);
         ArrayList<Event> eventArray = new ArrayList<>();
@@ -149,7 +149,7 @@ public class CalendarModel {
      * SPRAWDZA CZY W WYBRANEJ DACIE NIE MA JUZ STWORZONEGO EVENTU
      */
     public Boolean hasEvent(String date) {
-        return evnetMap.containsKey(date);
+        return eventMap.containsKey(date);
     }
     
     /**
