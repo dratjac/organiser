@@ -432,7 +432,7 @@ public class Calculator {
 				if (porown != true){
 					operand2.setStrNumber(input);
 		        }
-				if(operand1.number != "" %% operand2.number != "") {
+				if(operand1.number != "" && operand2.number != "") {
 		            rownanie();
 		            operand1.setStrNumber(input);
 		            porown = true;
@@ -445,11 +445,30 @@ public class Calculator {
 		frame.getContentPane().add(button_eq);
 		
 		button_inv = new JButton("1/x");
-		button_inv.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		button_inv.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textField.setText("");
+				Numbers num1 = new DoubleNumb(input);
+				num1.Parse();
+	            double num2 = new BigDecimal(1).divide(new BigDecimal(num1.getNumD()), 10, BigDecimal.ROUND_HALF_UP).doubleValue();
+	            display(""+num2);
+	            input = ""+num2;
+	            operand1.setStrNumber(input);
+	            porown = true;
+	            con = false;
+	            podzial = false;
+			}
+		});
+		button_inv.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		button_inv.setBounds(260, 174, 50, 50);
 		frame.getContentPane().add(button_inv);
 		
 		button_perc = new JButton("%");
+		button_perc.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		button_perc.setBounds(260, 111, 50, 50);
 		frame.getContentPane().add(button_perc);
 			
@@ -459,9 +478,6 @@ public class Calculator {
 				textField.setText("");
 				Numbers num1 = new DoubleNumb(input);
 				num1.Parse();
-	
-	            //double num1;
-	            //double.TryParse(input, out num1);
 	            double num2 = Math.sqrt(num1.getNumD());
 	            display(""+num2);
 	            input = ""+num2;
@@ -519,7 +535,24 @@ public class Calculator {
 		button_back = new JButton("\u2190");
 		button_back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				if(input.charAt(0) == '-' && input.length() == 2) {
+					input = "0";
+					textField.setText("0");
+				}
+				else if(input.length() == 1) {
+					input = "0";
+					textField.setText("0");
+				}
+				else if(input.charAt(input.length()-2) == '.') {
+					input = input.substring(0, input.length()-2);
+					textField.setText(input);
+					con = false;
+				}
+				else {
+					input = input.substring(0, input.length()-1);
+					textField.setText(input);
+					if(con == true) con = false;
+				}
 			}
 		});
 		button_back.setBounds(12, 48, 50, 50);
@@ -539,9 +572,4 @@ public class Calculator {
 		button_col.setBounds(136, 300, 50, 50);
 		frame.getContentPane().add(button_col);
 	}
-	
-	//private void rememberNumber() {
-		//remembered = Double.parseDouble(textField.getText());
-		//System.out.println(remembered);
-	//}
 }
