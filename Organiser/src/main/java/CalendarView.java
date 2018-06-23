@@ -73,7 +73,7 @@ public class CalendarView{
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
-        c.gridy = 0;
+        c.gridx = 0;
         JScrollPane dayScrollPane = new JScrollPane(dayTextPane);
         dayScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         dayViewPanel.add(dayScrollPane, c);
