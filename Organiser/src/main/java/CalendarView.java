@@ -1,21 +1,29 @@
+import java.util.ArrayList;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.JScrollPane;
-import java.awt.GridLayout;
-import java.awt.Dimension;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+import javax.swing.event.ChangeEvent;
 
 public class CalendarView{
 	private CalendarModel model;
+	private DAYS[] arrayOfDays = DAYS.values();
     private MONTHS[] arrayOfMonths = MONTHS.values();
+    private int prevHighlight = -1;
     private int maxDays;
 
     private JFrame frame = new JFrame("Calendar");
@@ -25,6 +33,7 @@ public class CalendarView{
     private JButton nextDay = new JButton("Next");
     private JButton prevDay = new JButton("Prev");
     private JTextPane dayTextPane = new JTextPane();
+    private ArrayList<JButton> dayBtns = new ArrayList<JButton>(); 
     
     /**
      * TWORZENIE KALENDARZA
@@ -35,6 +44,13 @@ public class CalendarView{
         monthViewPanel.setLayout(new GridLayout(0, 7));
         dayTextPane.setPreferredSize(new Dimension(300, 150));
         dayTextPane.setEditable(false);
+        
+        createDayBtns();
+        addBlankBtns();
+        addDayBtns();
+        highlightEvents();
+        showDate(model.getSelectedDay());
+        highlightSelectedDate(model.getSelectedDay() - 1);
 
         JButton prevMonth = new JButton("<");
         prevMonth.addActionListener(new ActionListener() {
@@ -73,7 +89,7 @@ public class CalendarView{
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
-        c.gridx = 0;
+        c.gridy = 0;
         JScrollPane dayScrollPane = new JScrollPane(dayTextPane);
         dayScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         dayViewPanel.add(dayScrollPane, c);
@@ -110,5 +126,108 @@ public class CalendarView{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            if (model.hasMonthChanged()) {
+                maxDays = model.getMaxDays();
+                dayBtns.clear();
+                monthViewPanel.removeAll();
+                monthLabel.setText(arrayOfMonths[model.getCurrentMonth()] + " " + model.getCurrentYear());
+                createDayBtns();
+                addBlankBtns();
+                addDayBtns();
+                highlightEvents();
+                prevHighlight = -1;
+                model.resetHasMonthChanged();
+                frame.pack();
+                frame.repaint();
+            } else {
+                showDate(model.getSelectedDay());
+                highlightSelectedDate(model.getSelectedDay() - 1);
+            }
+        }
+    }
+    
+    /**
+     * POKAZUJE WYBRANA DATE I EVENTY ODBYWAJACE SIE TEGO DNIA
+     */
+    private void showDate(final int d) {
+        model.setSelectedDate(d);
+        String dayOfWeek = arrayOfDays[model.getDayOfWeek(d) - 1] + "";
+        String date = (model.getCurrentMonth() + 1) + "/" + d + "/" + model.getCurrentYear();
+        String events = "";
+        if (model.hasEvent(date)) {
+            events += model.getEvents(date);
+        }
+        dayTextPane.setText(dayOfWeek + " " + date + "\n" + events);
+        dayTextPane.setCaretPosition(0);
+    }
+
+    /**
+     * PODKRESLA OBECNIE WYBRANA DATE
+     */
+    private void highlightSelectedDate(int d) {
+        Border border = new LineBorder(Color.ORANGE, 2);
+        dayBtns.get(d).setBorder(border);
+        if (prevHighlight != -1) {
+            dayBtns.get(prevHighlight).setBorder(new JButton().getBorder());
+        }
+        prevHighlight = d;
+    }
+
+    /**
+     * PODKRESLA DNI W KTORYCH SA JAKIES EVENTY
+     */
+    private void highlightEvents() {
+        for (int i = 1; i <= maxDays; i++) {
+            if (model.hasEvent((model.getCurrentMonth() + 1) + "/" + i + "/" + model.getCurrentYear())) {
+                dayBtns.get(i - 1).setBackground(Color.decode("0xE4EFF8"));
+            }
+        }
+    }
+
+    /**
+     * TWORZENIE PRZYCISKOW REPREZENTUJACYCH DNI MIESIACA
+     */
+    private void createDayBtns() {
+        for (int i = 1; i <= maxDays; i++) {
+            final int d = i;
+            JButton day = new JButton(Integer.toString(d));
+            day.setBackground(Color.WHITE);
+
+            day.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent arg0) {
+                    showDate(d);
+                    highlightSelectedDate(d - 1);
+                    create.setEnabled(true);
+                    nextDay.setEnabled(true);
+                    prevDay.setEnabled(true);
+                }
+            });
+            dayBtns.add(day);
+        }
+    }
+
+    /**
+     * DODAJE GUZIKI  REPREZENTUJACE DNI MIESIACA NA PANELU
+     */
+    private void addDayBtns() {
+        for (JButton d : dayBtns) {
+        	 monthViewPanel.add(d);
+        }
+    }
+
+    /**
+     * DODAJE ZAPYCHACZE ABY WYROWNAC KALENDARZ
+     */
+    private void addBlankBtns() {
+        for (int j = 1; j < model.getDayOfWeek(1); j++) {
+            JButton blank = new JButton();
+            blank.setEnabled(false);
+            monthViewPanel.add(blank);
+        }
     }
 }
