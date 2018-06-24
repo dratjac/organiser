@@ -41,7 +41,7 @@ public class Organiser {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JLabel lblOrganiser = new JLabel("Organiser");
@@ -51,6 +51,13 @@ public class Organiser {
 		frame.getContentPane().add(lblOrganiser);
 		
 		JButton btnCalendar = new JButton("Event Calendar");
+		btnCalendar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				CalendarModel cm = new CalendarModel();
+		        CalendarView cv = new CalendarView(cm);
+		        cm.attach(cv);
+			}
+		});
 		btnCalendar.setBounds(10, 106, 199, 33);
 		frame.getContentPane().add(btnCalendar);
 		

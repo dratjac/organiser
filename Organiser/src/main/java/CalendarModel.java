@@ -1,9 +1,17 @@
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Collections;
 import java.util.Comparator;
+
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
@@ -25,8 +33,15 @@ public class CalendarModel {
 	public CalendarModel() {
 		maxDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 	    selectedDay = cal.get(Calendar.DATE);
-	    //loadEvents();                                            
+	    loadEvents();                                            
 	}
+	
+    /**
+     * DODAJE ChangeListeners DO array
+     */
+    public void attach(ChangeListener l) {
+        listeners.add(l);
+    }	
 	
 	/**
      * UPDATUJE WSZYSTKIE ChangeListeners W array.
@@ -173,17 +188,14 @@ public class CalendarModel {
         }
 
         ArrayList<Event> eventArray = eventMap.get(date);
-        Collections.sort(eventArray);
-        Collection.this(eventHashmap, timeComparator());
+        Collections.sort(eventArray, timeComparator());
 
-        int timeStartMins = convertHourToMin(timeStart);
-        int timeEndMins = convertHourToMin(timeEnd);
+        int timeStartMins = convertHourToMin(timeStart), timeEndMins = convertHourToMin(timeEnd);
         for (Event e : eventArray) {
-            int eventStartTime = convertHourToMin(e.startTime);
-            int eventEndTime = convertHourToMin(e.endTime);
-            if (timeStartMins > eventStartTime && timeStartMins < eventEndTime) {
+            int eventStartTime = convertHourToMin(e.startTime), eventEndTime = convertHourToMin(e.endTime);
+            if (timeStartMins >= eventStartTime && timeStartMins < eventEndTime) {
                 return true;
-            } else if (timeStartMins < eventStartTime && timeEndMins > eventStartTime) {
+            } else if (timeStartMins <= eventStartTime && timeEndMins > eventStartTime) {
                 return true;
             }
         }
@@ -195,16 +207,56 @@ public class CalendarModel {
      */
     public String getEvents(String date) {
         ArrayList<Event> eventArray = eventMap.get(date);
-        Collections.sort(eventArray);
-        Collection.this(eventHashmap, timeComparator());
+        Collections.sort(eventArray, timeComparator());
         String events = "";
-        if (timeStartMins > eventStartTime && timeStartMins < eventEndTime) {
-            return true;
-        }
         for (Event e : eventArray) {
-            events = events + e.toString() + "\n";
+            events += e.toString() + "\n";
         }
         return events;
+    }
+    
+    /**
+     * ZAPISUJE WSZYSTKIE EVENTY W  "events.ser".
+     */
+    public void saveEvents() {
+        if (eventMap.isEmpty()) {
+            return;
+        }
+        try {
+            FileOutputStream fOut = new FileOutputStream("events.ser");
+            ObjectOutputStream oOut = new ObjectOutputStream(fOut);
+            oOut.writeObject(eventMap);
+            oOut.close();
+            fOut.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * WCZYTUJE EVENTY Z "events.ser".
+     */
+    @SuppressWarnings("unchecked")
+    private void loadEvents() {
+        try {
+            FileInputStream fIn = new FileInputStream("events.ser");
+            ObjectInputStream oIn = new ObjectInputStream(fIn);
+            HashMap<String, ArrayList<Event>> temp = (HashMap<String, ArrayList<Event>>) oIn.readObject();
+            for (String date : temp.keySet()) {
+                if (hasEvent(date)) {
+                    ArrayList<Event> eventArray = eventMap.get(date);
+                    eventArray.addAll(temp.get(date));
+                } else {
+                    eventMap.put(date, temp.get(date));
+                }
+            }
+            oIn.close();
+            fIn.close();
+        } catch (IOException ioe) {
+        } catch (ClassNotFoundException c) {
+            System.out.println("Class not found");
+            c.printStackTrace();
+        }
     }
     
     /**
@@ -233,7 +285,8 @@ public class CalendarModel {
     /**
      * TWORZENIE EVENTU
      */
-    private static class Event{
+    private static class Event implements Serializable {
+    	private static final long serialVersionUID = -6030371583841330976L;
         private String title;
         private String date;
         private String startTime;

@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dialog;
@@ -10,21 +7,25 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public class CalendarView{
+public class CalendarView implements ChangeListener {
 	private CalendarModel model;
 	private DAYS[] arrayOfDays = DAYS.values();
     private MONTHS[] arrayOfMonths = MONTHS.values();
@@ -60,9 +61,10 @@ public class CalendarView{
         create.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {createEventDialog();}
+            public void actionPerformed(ActionEvent e) { 
+            	createEventDialog();
+            }
         });
-
         JButton prevMonth = new JButton("<");
         prevMonth.addActionListener(new ActionListener() {
 
@@ -127,6 +129,14 @@ public class CalendarView{
         dayViewPanel.add(btnsPanel, c);
 
         JButton quit = new JButton("Quit");
+        quit.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                model.saveEvents();
+                System.exit(0);
+            }
+        });
 
         frame.add(prevMonth);
         frame.add(monthContainer);
@@ -134,35 +144,36 @@ public class CalendarView{
         frame.add(dayViewPanel);
         frame.add(quit);
         frame.setLayout(new FlowLayout());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+    }
         
-        @Override
-        public void stateChanged(ChangeEvent e) {
-            if (model.hasMonthChanged()) {
-                maxDays = model.getMaxDays();
-                dayBtns.clear();
-                monthViewPanel.removeAll();
-                monthLabel.setText(arrayOfMonths[model.getCurrentMonth()] + " " + model.getCurrentYear());
-                createDayBtns();
-                addBlankBtns();
-                addDayBtns();
-                highlightEvents();
-                prevHighlight = -1;
-                model.resetHasMonthChanged();
-                frame.pack();
-                frame.repaint();
-            } else {
-                showDate(model.getSelectedDay());
-                highlightSelectedDate(model.getSelectedDay() - 1);
-            }
+    @Override
+    public void stateChanged(ChangeEvent e) {
+    	if (model.hasMonthChanged()) {
+    		maxDays = model.getMaxDays();
+    		dayBtns.clear();
+    		monthViewPanel.removeAll();
+    		monthLabel.setText(arrayOfMonths[model.getCurrentMonth()] + " " + model.getCurrentYear());
+    		createDayBtns();
+    		addBlankBtns();
+    		addDayBtns();
+    		highlightEvents();
+    		prevHighlight = -1;
+    		model.resetHasMonthChanged();
+    		frame.pack();
+    		frame.repaint();
+        } else {
+        	showDate(model.getSelectedDay());
+            highlightSelectedDate(model.getSelectedDay() - 1);
         }
     }
     
+    
     /**
      * TWORZENIE EVENTU W WYBRANYM DNIU ZA POMOCA INPUTU USERA
-     */
+    */
     private void createEventDialog() {
         final JDialog eventDialog = new JDialog();
         eventDialog.setTitle("Create event");
