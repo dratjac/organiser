@@ -22,6 +22,11 @@ public class test {
     }
    
     private static Double findExchangeRateAndConvert(String from, String to, int amount) {
+    	
+    	String x = "5.4";
+    	Double y = Double.parseDouble(x);
+    	System.out.println(y.getClass().getName());
+    			
         try {
             //Yahoo Finance API
             URL url = new URL("http://finance.yahoo.com/d/quotes.csv?f=l1&s="+ from + to + "=X");
@@ -32,7 +37,7 @@ public class test {
             }
             reader.close();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
         }
         return null;
     }

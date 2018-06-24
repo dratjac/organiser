@@ -7,10 +7,12 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
-
+import currencyConverter.CurrencyConverterFrame ;
+import currencyConverter.CurrencyConverterFrame;
 public class Organiser {
 
 	private JFrame frame;
+	
 
 	/**
 	 * Launch the application.
@@ -65,9 +67,10 @@ public class Organiser {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				
-				
-				
+				currencyConverter.CurrencyConverterFrame converter = new currencyConverter.CurrencyConverterFrame();
+				converter.newScreen();
+			
+
 			}
 		});
 		btnNewButton.setBounds(210, 106, 214, 33);

@@ -17,7 +17,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-public class MainFrame {
+public class CurrencyConverterFrame {
 
 	private JFrame frame;
 	private JTextField amountField;
@@ -26,11 +26,12 @@ public class MainFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	
+	public static void newScreen() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainFrame window = new MainFrame();
+					CurrencyConverterFrame window = new CurrencyConverterFrame();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -42,8 +43,17 @@ public class MainFrame {
 		});
 	}
 	
-	private static String convert(String from, String to, String amount) {
-		try {
+	private static String convert(String from, String to, String amount) throws  Exception,NumberFormatException{
+		
+			if(Double.parseDouble(amount)<0 )
+			{
+				throw new Exception("negative value");
+			}
+			if (Double.parseDouble(amount)>1000000)
+			{
+				throw new Exception("Too large value \n max value = 1 mln");
+			}
+			
 			URL url = new URL("http://free.currencyconverterapi.com/api/v5/convert?q="+from+"_"+to+"&compact=y");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
             String line = reader.readLine();
@@ -53,17 +63,13 @@ public class MainFrame {
             	String[] value =part2.split(":");
             	value[1]=value[1].replaceAll("}", "");
             	 
+            	reader.close();
+            	return  Double.toString(Math.round(Double.parseDouble(value[1]) * Double.parseDouble(amount)*10000d)/10000d );
             	
-            	return  Double.toString(Double.parseDouble(value[1]) * Double.parseDouble(amount));
             }
-            reader.close();
-            
-		}
-		catch(Exception e) {
-			return e.getMessage();
-			
-		}
-		return null;
+            else {
+            	throw new Exception("incorrect url");
+            }
 		
 		
 	}
@@ -72,7 +78,8 @@ public class MainFrame {
 	/**
 	 * Create the application.
 	 */
-	public MainFrame() {
+	public CurrencyConverterFrame() {
+		
 		initialize();
 	}
 
@@ -82,7 +89,7 @@ public class MainFrame {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Currency Converter");
@@ -110,7 +117,7 @@ public class MainFrame {
 		frame.getContentPane().add(lblNewLabel_1);
 		
 		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"USD", "PLN", "GBN", "EUR", "CHF"}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"USD", "PLN", "GBP", "EUR", "CHF"}));
 		comboBox.setToolTipText("DUPA");
 		comboBox.setEditable(true);
 		comboBox.setBounds(168, 142, 86, 20);
@@ -122,7 +129,7 @@ public class MainFrame {
 		frame.getContentPane().add(lblNewLabel_2);
 		
 		JComboBox comboBox2 = new JComboBox();
-		comboBox2.setModel(new DefaultComboBoxModel(new String[] {"PLN", "USD", "GBN", "EUR", "CHF"}));
+		comboBox2.setModel(new DefaultComboBoxModel(new String[] {"PLN", "USD", "GBP", "EUR", "CHF"}));
 		comboBox2.setEditable(true);
 		comboBox2.setBounds(168, 186, 86, 20);
 		frame.getContentPane().add(comboBox2);
@@ -142,7 +149,21 @@ public class MainFrame {
 		JButton convertButton = new JButton("Convert");
 		convertButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				try {
 				resultField.setText(convert(comboBox.getSelectedItem().toString(), comboBox2.getSelectedItem().toString(), amountField.getText()));
+				}
+			catch(NumberFormatException e1) {
+				
+				ExceptionFrame frame = new ExceptionFrame("Incorrect format");
+				frame.setVisible(true);
+			}
+				catch(Exception e2){
+					
+					ExceptionFrame frame = new ExceptionFrame(e2.getMessage());
+					frame.setVisible(true);
+				}
+				
 				
 			}
 		});
@@ -159,7 +180,12 @@ public class MainFrame {
 		resetButton.setBounds(302, 185, 89, 23);
 		frame.getContentPane().add(resetButton);
 		
-		JButton backButton = new JButton("Back to main menu");
+		JButton backButton = new JButton("Back to menu");
+		backButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.dispose();
+			}
+		});
 		backButton.setBounds(287, 220, 121, 23);
 		frame.getContentPane().add(backButton);
 	}
