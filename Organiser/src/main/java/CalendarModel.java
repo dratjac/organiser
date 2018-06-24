@@ -146,7 +146,7 @@ public class CalendarModel {
      * TWORZY EVENT W WYBRANYM DNIU
      */
     public void createEvent(String title, String startTime, String endTime) {
-        String date = (cal.get(Calendar.MONTH)) + "/" + selectedDay + "/" + cal.get(Calendar.YEAR);
+        String date = (cal.get(Calendar.MONTH)+1) + "/" + selectedDay + "/" + cal.get(Calendar.YEAR);
         Event e = new Event(title, date, startTime, endTime);
         ArrayList<Event> eventArray = new ArrayList<>();
         if(hasEvent(e.date)) {
@@ -167,8 +167,8 @@ public class CalendarModel {
      * SPRAWDZA CZY NOWY EVENT NIE KONFLIKTUJE CZASOWO Z WCZESNIEJ USTALONYM EVENTEM
      */
     public Boolean hasEventConflict(String timeStart, String timeEnd) {
-        String date = (getCurrentMonth()) + "/" + selectedDay + "/" + getCurrentYear();
-        if (not(hasEvent(date))) {
+        String date = (getCurrentMonth()+1) + "/" + selectedDay + "/" + getCurrentYear();
+        if (!hasEvent(date)) {
             return false;
         }
 
