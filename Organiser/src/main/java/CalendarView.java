@@ -3,16 +3,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dialog;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Dimension;
+import java.awt.Insets;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.JScrollPane;
 import javax.swing.border.Border;
@@ -51,6 +56,12 @@ public class CalendarView{
         highlightEvents();
         showDate(model.getSelectedDay());
         highlightSelectedDate(model.getSelectedDay() - 1);
+        
+        create.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {createEventDialog();}
+        });
 
         JButton prevMonth = new JButton("<");
         prevMonth.addActionListener(new ActionListener() {
@@ -147,6 +158,103 @@ public class CalendarView{
                 highlightSelectedDate(model.getSelectedDay() - 1);
             }
         }
+    }
+    
+    /**
+     * TWORZENIE EVENTU W WYBRANYM DNIU ZA POMOCA INPUTU USERA
+     */
+    private void createEventDialog() {
+        final JDialog eventDialog = new JDialog();
+        eventDialog.setTitle("Create event");
+        eventDialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+        final JTextField eventText = new JTextField(30);
+        final JTextField timeStart = new JTextField(10);
+        final JTextField timeEnd = new JTextField(10);
+        JButton save = new JButton("Save");
+        save.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (eventText.getText().isEmpty()) {
+                    return;
+                }
+                if ((!eventText.getText().isEmpty() && (timeStart.getText().isEmpty() || timeEnd.getText().isEmpty()))
+                        || timeStart.getText().length() != 5
+                        || timeEnd.getText().length() != 5
+                        || !timeStart.getText().matches("([01]?[0-9]|2[0-3]):[0-5][0-9]")
+                        || !timeEnd.getText().matches("([01]?[0-9]|2[0-3]):[0-5][0-9]")) {
+                    JDialog timeErrorDialog = new JDialog();
+                    timeErrorDialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                    timeErrorDialog.setLayout(new GridLayout(2, 0));
+                    timeErrorDialog.add(new JLabel("Please enter start and end time in format XX:XX."));
+                    JButton ok = new JButton("Okay");
+                    ok.addActionListener(new ActionListener() {
+
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            timeErrorDialog.dispose();
+                        }
+                    });
+                    timeErrorDialog.add(ok);
+                    timeErrorDialog.pack();
+                    timeErrorDialog.setVisible(true);
+                } else if (!eventText.getText().equals("")) {
+                    if (model.hasEventConflict(timeStart.getText(), timeEnd.getText())) {
+                        JDialog conflictDialog = new JDialog();
+                        conflictDialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                        conflictDialog.setLayout(new GridLayout(2, 0));
+                        conflictDialog.add(new JLabel("Time conflict."));
+                        JButton ok = new JButton("Okay");
+                        ok.addActionListener(new ActionListener() {
+
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                conflictDialog.dispose();
+                            }
+                        });
+                        conflictDialog.add(ok);
+                        conflictDialog.pack();
+                        conflictDialog.setVisible(true);
+                    } else {
+                        eventDialog.dispose();
+                        model.createEvent(eventText.getText(), timeStart.getText(), timeEnd.getText());
+                        showDate(model.getSelectedDay());
+                        highlightEvents();
+                    }
+                }
+            }
+        });
+        eventDialog.setLayout(new GridBagLayout());
+        JLabel date = new JLabel();
+        date.setText(model.getCurrentMonth() + 1 + "/" + model.getSelectedDay() + "/" + model.getCurrentYear());
+        date.setBorder(BorderFactory.createEmptyBorder());
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(2, 2, 2, 2);
+        c.gridx = 0;
+        c.gridy = 0;
+        eventDialog.add(date, c);
+        c.gridy = 1;
+        c.weightx = 1.0;
+        c.anchor = GridBagConstraints.LINE_START;
+        eventDialog.add(new JLabel("Event"), c);
+        c.gridy = 2;
+        eventDialog.add(eventText, c);
+        c.gridy = 3;
+        c.weightx = 0.0;
+        c.anchor = GridBagConstraints.LINE_START;
+        eventDialog.add(new JLabel("Time Start (00:00)"), c);
+        c.anchor = GridBagConstraints.CENTER;
+        eventDialog.add(new JLabel("Time End (24:00)"), c);
+        c.gridy = 4;
+        c.anchor = GridBagConstraints.LINE_START;
+        eventDialog.add(timeStart, c);
+        c.anchor = GridBagConstraints.CENTER;
+        eventDialog.add(timeEnd, c);
+        c.anchor = GridBagConstraints.LINE_END;
+        eventDialog.add(save, c);
+        eventDialog.pack();
+        eventDialog.setVisible(true);
     }
     
     /**

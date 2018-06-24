@@ -4,12 +4,14 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Collections;
 import java.util.Comparator;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class CalendarModel {
 	private int maxDays;
 	private int selectedDay;
 	private HashMap<String, ArrayList<Event>> eventMap = new HashMap<>();
-	private ArrayList<string> listeners = new ArrayList<>(); 
+	private ArrayList<ChangeListener> listeners = new ArrayList<>(); 
 	private GregorianCalendar cal = new GregorianCalendar();
 	private boolean monthChanged = false;
 	 
@@ -25,6 +27,15 @@ public class CalendarModel {
 	    selectedDay = cal.get(Calendar.DATE);
 	    //loadEvents();                                            
 	}
+	
+	/**
+     * UPDATUJE WSZYSTKIE ChangeListeners W array.
+     */
+    public void update() {
+        for (ChangeListener l : listeners) {
+            l.stateChanged(new ChangeEvent(this));
+        }
+    }
 	
 	/**
      * SETTER WYBRANEGO PRZEZ USERA DNIA
@@ -76,7 +87,7 @@ public class CalendarModel {
         cal.add(Calendar.MONTH, 1);
         maxDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         monthChanged = true;
-        //update();                                                    
+        update();                                                    
     }
 
     /**
@@ -86,7 +97,7 @@ public class CalendarModel {
         cal.add(Calendar.MONTH, -1);
         maxDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         monthChanged = true;
-        //update();                                                  
+        update();                                                  
     }
 
     /**
@@ -98,7 +109,7 @@ public class CalendarModel {
             nextMonth();
             selectedDay = 1;
         }
-        //update();               
+        update();               
     }
 
     /**
@@ -110,7 +121,7 @@ public class CalendarModel {
             prevMonth();
             selectedDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         }
-        //update();                                                         
+        update();                                                         
     }
 
     /**
@@ -200,20 +211,21 @@ public class CalendarModel {
      * KONWERSJA GODZIN NA MINUTY
      */
     private int convertHourToMin(String time) {
-        int hours = Integer.valueof(time.substring(0, 1));
-        return hours * 60 + Integer.valueof(time.substring(3));
+        int hours = Integer.valueOf(time.substring(0, 2));
+        return hours * 60 + Integer.valueOf(time.substring(3));
     }
 
     /**
      * KOMPARATOR DO POROWNYWANIA CZASEM W FORMACIE XX:XX.
      */
     private static Comparator<Event> timeComparator() {
+    	return new Comparator<Event>() {
             @Override
             public int compare(Event arg0, Event arg1) {
-                if (arg0.startTime.substring(0, 2).equalto(arg1.startTime.substring(0, 2))) {
-                    return Integer.parseint(arg0.startTime.substring(3, 5)) - Integer.parseint(arg1.startTime.substring(3, 5));
+                if (arg0.startTime.substring(0, 2).equals(arg1.startTime.substring(0, 2))) {
+                    return Integer.parseInt(arg0.startTime.substring(3, 5)) - Integer.parseInt(arg1.startTime.substring(3, 5));
                 }
-                return Integer.parseint(arg0.startTime.substring(0, 2)) - Integer.parseint(arg1.startTime.substring(0, 2));
+                return Integer.parseInt(arg0.startTime.substring(0, 2)) - Integer.parseInt(arg1.startTime.substring(0, 2));
             }
         };
     }
