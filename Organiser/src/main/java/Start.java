@@ -1,3 +1,6 @@
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,11 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 import java.awt.print.*;
-
-
 import javax.swing.JFileChooser;
-
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -22,8 +21,11 @@ import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoManager;
 
 
-public class Start extends JFrame implements ActionListener {
-	
+
+
+public class Start {
+
+	JFrame frame;
 	JMenuBar menuBar;
 	JMenu mPliki, mPomoc,mEdycja,mFormat;
 	JMenuItem iNowy, iOtworz, iZapisz, iZapiszJako, iExit, iAutor;
@@ -37,157 +39,249 @@ public class Start extends JFrame implements ActionListener {
 	
 	File plik;
 	
-	
-	
-	
-	
-	
-	Start()
-	{
+
+	/**
+	 * Launch the application.
+	 */
+	public void runFrame() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Start window = new Start();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public Start() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		super("Notatnik");
 		menuBar = new JMenuBar();
 		
-			mPliki = new JMenu("Pliki");
-			mPomoc = new JMenu("Pomoc");
-			mEdycja = new JMenu("Edycja");
-			mFormat = new JMenu("Format");
-			
-				iNowy = new JMenuItem("Nowy");
-				iNowy.addActionListener(this);
-				iOtworz = new JMenuItem("Otwórz...");
-				iOtworz.addActionListener(this);
-				iZapisz = new JMenuItem("Zapisz");
-				iZapisz.addActionListener(this);
-				iZapiszJako = new JMenuItem("Zapisz jako...");
-				iZapiszJako.addActionListener(this);
-				iExit = new JMenuItem("Exit");
-				iExit.addActionListener(this);
-				iCofnij = new JMenuItem("Cofnij");
-				iCofnij.addActionListener(this);
-				iPowtorz= new JMenuItem("Powtorz");
-				iPowtorz.addActionListener(this);
-				iWytnij = new JMenuItem("Wytnij");
-				iWytnij.addActionListener(this);
-				iKopiuj = new JMenuItem("Kopiuj");
-				iKopiuj.addActionListener(this);
-				iWklej = new JMenuItem("Wklej");
-				iWklej.addActionListener(this);
-				iPczcionka = new JMenuItem("Powiekszenie czcionki");
-				iPczcionka.addActionListener(this);
-				iZczcionka = new JMenuItem("Zmiejszenie czcionki");
-				iZczcionka.addActionListener(this);
-				iPogrubienie = new JMenuItem("Pogrubienie");
-				iPogrubienie.addActionListener(this);
-				iKursywa = new JMenuItem("Kursywa");
-				iKursywa.addActionListener(this);
-				iDrukuj = new JMenuItem("Drukuj");
-				iDrukuj.addActionListener(this);
-				
-					
-					
-				
-				
-				
-				
-					
-				
-				
-					
-				
-				
-				iAutor = new JMenuItem("Autor Kodu w Java");
-				iAutor.addActionListener(this);
-				
-				mPliki.add(iNowy);
-				mPliki.add(iOtworz);
-				mPliki.add(iZapisz);
-				mPliki.add(iZapiszJako);
-				
-				
-				mPliki.add(iDrukuj);
-				mPliki.addSeparator();
-				mPliki.add(iExit);
-				
-				mEdycja.add(iCofnij);
-				mEdycja.add(iPowtorz);
-				mEdycja.add(iWytnij);
-				mEdycja.add(iKopiuj);
-				mEdycja.add(iWklej);
-				
-				mPomoc.add(iAutor);
+		mPliki = new JMenu("Pliki");
+		mPomoc = new JMenu("Pomoc");
+		mEdycja = new JMenu("Edycja");
+		mFormat = new JMenu("Format");
 		
-				menuBar.add(mPliki);
-				menuBar.add(mEdycja);
-				menuBar.add(mFormat);
-				
-				
-				mFormat.add(iPczcionka);
-				mFormat.add(iZczcionka);
-				mFormat.add(iPogrubienie);
-				mFormat.add(iKursywa);
-				
-				
-				
-				
-				
-				
-				
-				
-				menuBar.add(mPomoc);
-			
-			
-			
-			
-			
-			
-			
-			
-		notatnik = new JTextArea();
-		notatnik.setFont(new Font("System", Font.PLAIN, 15));
-		JScrollPane scrol = new JScrollPane(notatnik); 
-		getContentPane().add(scrol);
-			
-		setJMenuBar(menuBar);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(600,500);
-		setLocationRelativeTo(null);
-		setVisible(true);
-		manager.setLimit(1000);
-		notatnik.getDocument().addUndoableEditListener(new UndoableEditListener() {
-
-			@Override
-			public void undoableEditHappened(UndoableEditEvent e) {
-			    manager.addEdit(e.getEdit()); 
-
+			iNowy = new JMenuItem("Nowy");
+			iNowy.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					notatnik.setText("");frame.setTitle("Notatnik");plik=null;
+					
 				}
 			});
 		
-		
-		
+			
+				
+			
+			iOtworz = new JMenuItem("Otwórz...");
+			iOtworz.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					otworz();
+				}
+			});
+			
+			iZapisz = new JMenuItem("Zapisz");
+			iZapisz.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (plik==null) zapiszJako(); else zapisz();
+					
+				}
+			});
+			
+			iZapiszJako = new JMenuItem("Zapisz jako...");
+			iZapiszJako.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					zapiszJako();
+					
+				}
+			});
+			
+			iExit = new JMenuItem("Exit");
+			iExit.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					System.exit(0);
+				}
+			});
+			
+			iCofnij = new JMenuItem("Cofnij");
+			iCofnij.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					cofnij();
+				}
+			});
+			
+			iPowtorz= new JMenuItem("Powtorz");
+			iPowtorz.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					powtorz();
+				}
+			});
+			
+			iWytnij = new JMenuItem("Wytnij");
+			iWytnij.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					notatnik.cut();
+					
+				}
+			});
+			
+			iKopiuj = new JMenuItem("Kopiuj");
+			iKopiuj.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					notatnik.copy();
+				}
+			});
+			
+			iWklej = new JMenuItem("Wklej");
+			iWklej.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					notatnik.paste();
+				}
+			});
+			
+			iPczcionka = new JMenuItem("Powiekszenie czcionki");
+			iPczcionka.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					powiekszenie();
+				}
+			});
+			
+			iZczcionka = new JMenuItem("Zmiejszenie czcionki");
+			iZczcionka.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					pomniejszenie();
+				}
+			});
+			
+			iPogrubienie = new JMenuItem("Pogrubienie");
+			iPogrubienie.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					pogrubienie();
+				}
+			});
+			
+			iKursywa = new JMenuItem("Kursywa");
+			iKursywa.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					kursywa();
+				}
+			});
+			
+			iDrukuj = new JMenuItem("Drukuj");
+			iDrukuj.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					drukuj();
+				}
+			});
+			
+			
+			iAutor = new JMenuItem("Autor Kodu w Java");
+			iAutor.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					JOptionPane.showMessageDialog(frame, "Dawid Dziedziak", "Autor", JOptionPane.INFORMATION_MESSAGE);
+				}
+			});
+			
+			
+			mPliki.add(iNowy);
+			mPliki.add(iOtworz);
+			mPliki.add(iZapisz);
+			mPliki.add(iZapiszJako);
+			
+			
+			mPliki.add(iDrukuj);
+			mPliki.addSeparator();
+			mPliki.add(iExit);
+			
+			mEdycja.add(iCofnij);
+			mEdycja.add(iPowtorz);
+			mEdycja.add(iWytnij);
+			mEdycja.add(iKopiuj);
+			mEdycja.add(iWklej);
+			
+			mPomoc.add(iAutor);
 	
+			menuBar.add(mPliki);
+			menuBar.add(mEdycja);
+			menuBar.add(mFormat);
+			
+			
+			mFormat.add(iPczcionka);
+			mFormat.add(iZczcionka);
+			mFormat.add(iPogrubienie);
+			mFormat.add(iKursywa);
+			
+			
+			
+			
+			
+			
+			
+			
+			menuBar.add(mPomoc);
+		
+		
+		
+		
+		
+		
+		
+		
+	notatnik = new JTextArea();
+	notatnik.setFont(new Font("System", Font.PLAIN, 15));
+	JScrollPane scrol = new JScrollPane(notatnik); 
+	frame.getContentPane().add(scrol);
+		
+	frame.setJMenuBar(menuBar);
+	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	frame.setSize(600,500);
+	frame.setLocationRelativeTo(null);
+	frame.setVisible(true);
+	manager.setLimit(1000);
+	notatnik.getDocument().addUndoableEditListener(new UndoableEditListener() {
+
+		@Override
+		public void undoableEditHappened(UndoableEditEvent e) {
+		    manager.addEdit(e.getEdit()); 
+
+			}
+		});
+	
+	
+	
+
+		
 		
 	}
-
-	public static void main(String[] args) {
-		new Start();
-	}
-
-	
-	
 	
 	private void otworz()
 	{
 		notatnik.setText("");
 		JFileChooser fc = new JFileChooser();
-		if (fc.showOpenDialog(this)==JFileChooser.APPROVE_OPTION)
+		if (fc.showOpenDialog(frame)==JFileChooser.APPROVE_OPTION)
 		{
 			plik = fc.getSelectedFile();
 			try {
 				Scanner scaner = new Scanner(plik);
 				while (scaner.hasNext()) notatnik.append(scaner.nextLine()+"\n");
 				scaner.close();
-				this.setTitle(fc.getName(plik));
+				frame.setTitle(fc.getName(plik));
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -210,7 +304,7 @@ public class Start extends JFrame implements ActionListener {
 	{
 		JFileChooser fc = new JFileChooser();
 		fc.setSelectedFile(plik);
-		if (fc.showSaveDialog(this)==JFileChooser.APPROVE_OPTION)
+		if (fc.showSaveDialog(frame)==JFileChooser.APPROVE_OPTION)
 		{
 			plik = fc.getSelectedFile();
 			zapisz();
@@ -277,34 +371,9 @@ public void powtorz(){
 }
 	
 
-	
-	
-	
-
-	
-	public void actionPerformed(ActionEvent e) {
-		Object cel = e.getSource();
-		
-		if (cel==iExit) System.exit(0); else
-		if (cel==iCofnij) cofnij();else
-		if (cel==iPowtorz) powtorz();else
-		if (cel==iWytnij) notatnik.cut();else
-		if (cel==iKopiuj) notatnik.copy();else
-		if (cel==iWklej) notatnik.paste();else
-		if (cel==iPczcionka) powiekszenie();else
-		if (cel==iZczcionka) pomniejszenie();else
-		if (cel==iPogrubienie) pogrubienie();else
-		if (cel==iKursywa) kursywa();else
-		if (cel==iAutor) JOptionPane.showMessageDialog(this, "Dawid Dziedziak", "Autor", JOptionPane.INFORMATION_MESSAGE);else
-		if (cel==iOtworz) otworz();else
-		if (cel==iNowy) {notatnik.setText("");this.setTitle("Notatnik");plik=null;}else
-		if (cel==iZapiszJako) zapiszJako(); else
-		if (cel==iDrukuj) drukuj(); else
-		if (cel==iZapisz) {if (plik==null) zapiszJako(); else zapisz();
-		
-		
-		}
-		
-	}
-
 }
+	
+	
+
+
+
