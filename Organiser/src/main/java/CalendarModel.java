@@ -33,7 +33,7 @@ public class CalendarModel {
 	public CalendarModel() {
 		maxDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 	    selectedDay = cal.get(Calendar.DATE);
-	    loadEvents();                                            
+	    loadEvents();
 	}
 	
     /**
@@ -77,7 +77,7 @@ public class CalendarModel {
      * ZWROT OBECNEGO MIESIACA
      */
     public int getCurrentMonth() {
-        return cal.get(Calendar.MONTH);
+        return cal.get(Calendar.MONTH) +1;
     }
 
     /**
