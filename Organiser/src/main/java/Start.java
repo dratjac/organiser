@@ -5,8 +5,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+import java.awt.print.*;
 
-import javax.swing.JColorChooser;
+
 import javax.swing.JFileChooser;
 
 import javax.swing.JFrame;
@@ -27,8 +28,10 @@ public class Start extends JFrame implements ActionListener {
 	JMenu mPliki, mPomoc,mEdycja,mFormat;
 	JMenuItem iNowy, iOtworz, iZapisz, iZapiszJako, iExit, iAutor;
 	JMenuItem iCofnij,iPowtorz,iWytnij,iKopiuj,iWklej;
-	JMenuItem iPczcionka,iZczcionka,iPogrubienie,iKursywa;
+	JMenuItem iPczcionka,iZczcionka,iPogrubienie,iKursywa,iDrukuj;
 	
+	
+
 	JTextArea notatnik;
 	UndoManager manager = new UndoManager();
 	
@@ -37,7 +40,8 @@ public class Start extends JFrame implements ActionListener {
 	
 	
 	
-
+	
+	
 	Start()
 	{
 		
@@ -77,6 +81,9 @@ public class Start extends JFrame implements ActionListener {
 				iPogrubienie.addActionListener(this);
 				iKursywa = new JMenuItem("Kursywa");
 				iKursywa.addActionListener(this);
+				iDrukuj = new JMenuItem("Drukuj");
+				iDrukuj.addActionListener(this);
+				
 					
 					
 				
@@ -96,6 +103,9 @@ public class Start extends JFrame implements ActionListener {
 				mPliki.add(iOtworz);
 				mPliki.add(iZapisz);
 				mPliki.add(iZapiszJako);
+				
+				
+				mPliki.add(iDrukuj);
 				mPliki.addSeparator();
 				mPliki.add(iExit);
 				
@@ -207,12 +217,16 @@ public class Start extends JFrame implements ActionListener {
 		}
 	}
 	
+	
+	
+	
 	private void powiekszenie()
 	{
 		
 		
 		Font currentFont = notatnik.getFont();
 		Font newFont = currentFont.deriveFont(currentFont.getSize() +1F);
+		
 		notatnik.setFont(newFont);
 		
 		
@@ -239,6 +253,12 @@ public class Start extends JFrame implements ActionListener {
 		Font currentFont = notatnik.getFont();
 		Font newFont = currentFont.deriveFont(currentFont.getStyle()^ Font.ITALIC );
 		notatnik.setFont(newFont);
+		
+	}
+	
+	private void drukuj()
+	{
+		PrintSupport.printComponent(notatnik);
 		
 	}
 	
@@ -279,6 +299,7 @@ public void powtorz(){
 		if (cel==iOtworz) otworz();else
 		if (cel==iNowy) {notatnik.setText("");this.setTitle("Notatnik");plik=null;}else
 		if (cel==iZapiszJako) zapiszJako(); else
+		if (cel==iDrukuj) drukuj(); else
 		if (cel==iZapisz) {if (plik==null) zapiszJako(); else zapisz();
 		
 		
