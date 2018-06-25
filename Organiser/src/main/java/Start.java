@@ -24,12 +24,14 @@ public class Start extends JFrame implements ActionListener {
 	JMenuBar menuBar;
 	JMenu mPliki, mPomoc,mEdycja;
 	JMenuItem iNowy, iOtworz, iZapisz, iZapiszJako, iExit, iAutor;
-	JMenuItem iCofnij,iPowtorz;
+	JMenuItem iCofnij,iPowtorz,iWytnij,iKopiuj,iWklej;
 	
 	JTextArea notatnik;
 	UndoManager manager = new UndoManager();
 	
 	File plik;
+	
+	
 	
 	
 	
@@ -44,31 +46,56 @@ public class Start extends JFrame implements ActionListener {
 			mPomoc = new JMenu("Pomoc");
 			mEdycja = new JMenu("Edycja");
 			
-				iNowy = new JMenuItem("Nowy");iNowy.addActionListener(this);
-				iOtworz = new JMenuItem("Otwórz...");iOtworz.addActionListener(this);
-				iZapisz = new JMenuItem("Zapisz");iZapisz.addActionListener(this);
-				iZapiszJako = new JMenuItem("Zapisz jako...");iZapiszJako.addActionListener(this);
-				iExit = new JMenuItem("Exit");iExit.addActionListener(this);
-				iCofnij = new JMenuItem("Cofnij");iCofnij.addActionListener(this);
-				iPowtorz= new JMenuItem("Powtorz");iPowtorz.addActionListener(this);
+				iNowy = new JMenuItem("Nowy");
+				iNowy.addActionListener(this);
+				iOtworz = new JMenuItem("Otwórz...");
+				iOtworz.addActionListener(this);
+				iZapisz = new JMenuItem("Zapisz");
+				iZapisz.addActionListener(this);
+				iZapiszJako = new JMenuItem("Zapisz jako...");
+				iZapiszJako.addActionListener(this);
+				iExit = new JMenuItem("Exit");
+				iExit.addActionListener(this);
+				iCofnij = new JMenuItem("Cofnij");
+				iCofnij.addActionListener(this);
+				iPowtorz= new JMenuItem("Powtorz");
+				iPowtorz.addActionListener(this);
+				iWytnij = new JMenuItem("Wytnij");
+				iWytnij.addActionListener(this);
+				iKopiuj = new JMenuItem("Kopiuj");
+				iKopiuj.addActionListener(this);
+				iWklej = new JMenuItem("Wklej");
+				iWklej.addActionListener(this);
 				
 				
 				
 					
 				
 				
-				iAutor = new JMenuItem("Autor Kodu w Java");iAutor.addActionListener(this);
+					
 				
-				mPliki.add(iNowy);mPliki.add(iOtworz);mPliki.add(iZapisz);mPliki.add(iZapiszJako);
-				mPliki.addSeparator();mPliki.add(iExit);
 				
-				mEdycja.add(iCofnij);mEdycja.add(iPowtorz);
+				iAutor = new JMenuItem("Autor Kodu w Java");
+				iAutor.addActionListener(this);
+				
+				mPliki.add(iNowy);
+				mPliki.add(iOtworz);
+				mPliki.add(iZapisz);
+				mPliki.add(iZapiszJako);
+				mPliki.addSeparator();
+				mPliki.add(iExit);
+				
+				mEdycja.add(iCofnij);
+				mEdycja.add(iPowtorz);
+				mEdycja.add(iWytnij);
+				mEdycja.add(iKopiuj);
+				mEdycja.add(iWklej);
 				
 				mPomoc.add(iAutor);
 		
-			menuBar.add(mPliki);
-			menuBar.add(mEdycja);
-			menuBar.add(mPomoc);
+				menuBar.add(mPliki);
+				menuBar.add(mEdycja);
+				menuBar.add(mPomoc);
 			
 			
 			
@@ -172,6 +199,9 @@ public void powtorz(){
 		if (cel==iExit) System.exit(0); else
 		if (cel==iCofnij) cofnij();else
 		if (cel==iPowtorz) powtorz();else
+		if (cel==iWytnij) notatnik.cut();else
+		if (cel==iKopiuj) notatnik.copy();else
+		if (cel==iWklej) notatnik.paste();else
 		if (cel==iAutor) JOptionPane.showMessageDialog(this, "Dawid Dziedziak", "Autor", JOptionPane.INFORMATION_MESSAGE);else
 		if (cel==iOtworz) otworz();else
 		if (cel==iNowy) {notatnik.setText("");this.setTitle("Notatnik");plik=null;}else
