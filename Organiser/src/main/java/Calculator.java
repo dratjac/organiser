@@ -49,6 +49,73 @@ public class Calculator {
         textField.setText(textField.getText() + i);
     }
     
+    public static double rownanieTest(String x, char operate, String y) throws IllegalArgumentException {
+    	double wynik=0.0;
+    	Numbers operand1 = new DoubleNumb(x);
+        Numbers operand2 = new DoubleNumb(y);
+        operand1.Parse();
+        operand2.Parse();
+        BigDecimal num1 = new BigDecimal(operand1.getNumD());
+        BigDecimal num2 = new BigDecimal(operand2.getNumD());
+        int index1 = operand1.number.indexOf('.');
+		int index2 = operand2.number.indexOf('.');
+		int places = 0;
+		int places2 = 0;
+		int maxx;
+        switch (operate) {
+        case '/':
+        	if (num2.doubleValue() != 0) {
+        		wynik = num1.divide(num2, 10, BigDecimal.ROUND_HALF_UP).doubleValue();
+            }
+            else {
+            	throw new IllegalArgumentException();
+            }
+            break;
+        case '*':
+    		if(index1 >= 0) {
+	    		for(int i=index1+1;i<operand1.number.length();i++) {
+	    			places++;
+	    		}
+    		}
+    		if(index2 >= 0) {
+	    		for(int i=index2+1;i<operand2.number.length();i++) {
+	    			places++;
+	    		}
+    		}
+        	wynik = num1.multiply(num2).setScale(places, BigDecimal.ROUND_HALF_UP).doubleValue();
+            break;
+        case '+':
+    		if(index1 >= 0) {
+	    		for(int i=index1+1;i<operand1.number.length();i++) {
+	    			places++;
+	    		}
+    		}
+    		if(index2 >= 0) {
+	    		for(int i=index2+1;i<operand2.number.length();i++) {
+	    			places2++;
+	    		}
+    		}
+    		maxx = Math.max(places, places2);
+        	wynik = num1.add(num2).setScale(maxx, BigDecimal.ROUND_HALF_UP).doubleValue();
+            break;
+        case '-':
+        	if(index1 >= 0) {
+	    		for(int i=index1+1;i<operand1.number.length();i++) {
+	    			places++;
+	    		}
+    		}
+    		if(index2 >= 0) {
+	    		for(int i=index2+1;i<operand2.number.length();i++) {
+	    			places2++;
+	    		}
+    		}
+    		maxx = Math.max(places, places2);
+        	wynik = num1.subtract(num2).setScale(maxx, BigDecimal.ROUND_HALF_UP).doubleValue();
+            break;
+        }
+    	return wynik;
+    }
+    
     private void rownanie() {
     	textField.setText("");
         input = "0";
