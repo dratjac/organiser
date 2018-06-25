@@ -6,7 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -22,9 +24,10 @@ import javax.swing.undo.UndoManager;
 public class Start extends JFrame implements ActionListener {
 	
 	JMenuBar menuBar;
-	JMenu mPliki, mPomoc,mEdycja;
+	JMenu mPliki, mPomoc,mEdycja,mFormat;
 	JMenuItem iNowy, iOtworz, iZapisz, iZapiszJako, iExit, iAutor;
 	JMenuItem iCofnij,iPowtorz,iWytnij,iKopiuj,iWklej;
+	JMenuItem iPczcionka,iZczcionka,iPogrubienie,iKursywa;
 	
 	JTextArea notatnik;
 	UndoManager manager = new UndoManager();
@@ -34,8 +37,7 @@ public class Start extends JFrame implements ActionListener {
 	
 	
 	
-	
-	
+
 	Start()
 	{
 		
@@ -45,6 +47,7 @@ public class Start extends JFrame implements ActionListener {
 			mPliki = new JMenu("Pliki");
 			mPomoc = new JMenu("Pomoc");
 			mEdycja = new JMenu("Edycja");
+			mFormat = new JMenu("Format");
 			
 				iNowy = new JMenuItem("Nowy");
 				iNowy.addActionListener(this);
@@ -66,6 +69,17 @@ public class Start extends JFrame implements ActionListener {
 				iKopiuj.addActionListener(this);
 				iWklej = new JMenuItem("Wklej");
 				iWklej.addActionListener(this);
+				iPczcionka = new JMenuItem("Powiekszenie czcionki");
+				iPczcionka.addActionListener(this);
+				iZczcionka = new JMenuItem("Zmiejszenie czcionki");
+				iZczcionka.addActionListener(this);
+				iPogrubienie = new JMenuItem("Pogrubienie");
+				iPogrubienie.addActionListener(this);
+				iKursywa = new JMenuItem("Kursywa");
+				iKursywa.addActionListener(this);
+					
+					
+				
 				
 				
 				
@@ -95,6 +109,21 @@ public class Start extends JFrame implements ActionListener {
 		
 				menuBar.add(mPliki);
 				menuBar.add(mEdycja);
+				menuBar.add(mFormat);
+				
+				
+				mFormat.add(iPczcionka);
+				mFormat.add(iZczcionka);
+				mFormat.add(iPogrubienie);
+				mFormat.add(iKursywa);
+				
+				
+				
+				
+				
+				
+				
+				
 				menuBar.add(mPomoc);
 			
 			
@@ -104,7 +133,8 @@ public class Start extends JFrame implements ActionListener {
 			
 			
 			
-		notatnik = new JTextArea();notatnik.setFont(new Font("System", Font.PLAIN, 15));
+		notatnik = new JTextArea();
+		notatnik.setFont(new Font("System", Font.PLAIN, 15));
 		JScrollPane scrol = new JScrollPane(notatnik); 
 		getContentPane().add(scrol);
 			
@@ -176,7 +206,46 @@ public class Start extends JFrame implements ActionListener {
 			zapisz();
 		}
 	}
-
+	
+	private void powiekszenie()
+	{
+		
+		
+		Font currentFont = notatnik.getFont();
+		Font newFont = currentFont.deriveFont(currentFont.getSize() +1F);
+		notatnik.setFont(newFont);
+		
+		
+	}
+	
+	
+	private void pomniejszenie()
+	{
+		Font currentFont = notatnik.getFont();
+		Font newFont = currentFont.deriveFont(currentFont.getSize() -1F);
+		notatnik.setFont(newFont);
+	}
+	
+	private void pogrubienie()
+	{
+		Font currentFont = notatnik.getFont();
+		Font newFont = currentFont.deriveFont(currentFont.getStyle()^ Font.BOLD );
+		notatnik.setFont(newFont);
+		
+	}
+	
+	private void kursywa()
+	{
+		Font currentFont = notatnik.getFont();
+		Font newFont = currentFont.deriveFont(currentFont.getStyle()^ Font.ITALIC );
+		notatnik.setFont(newFont);
+		
+	}
+	
+	
+	
+	
+	
 	
 	public void cofnij(){
         if(manager.canUndo())
@@ -202,6 +271,10 @@ public void powtorz(){
 		if (cel==iWytnij) notatnik.cut();else
 		if (cel==iKopiuj) notatnik.copy();else
 		if (cel==iWklej) notatnik.paste();else
+		if (cel==iPczcionka) powiekszenie();else
+		if (cel==iZczcionka) pomniejszenie();else
+		if (cel==iPogrubienie) pogrubienie();else
+		if (cel==iKursywa) kursywa();else
 		if (cel==iAutor) JOptionPane.showMessageDialog(this, "Dawid Dziedziak", "Autor", JOptionPane.INFORMATION_MESSAGE);else
 		if (cel==iOtworz) otworz();else
 		if (cel==iNowy) {notatnik.setText("");this.setTitle("Notatnik");plik=null;}else
