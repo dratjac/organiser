@@ -41,7 +41,7 @@ public class Organiser {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JLabel lblOrganiser = new JLabel("Organiser");
@@ -62,10 +62,6 @@ public class Organiser {
 		frame.getContentPane().add(btnCalendar);
 		
 		JButton btnNewButton = new JButton("Currency Converter");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnNewButton.setBounds(210, 106, 214, 33);
 		frame.getContentPane().add(btnNewButton);
 		
