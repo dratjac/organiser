@@ -4,12 +4,12 @@ import org.junit.Test;
 
 public class CalendarTestMonth {
 
-	CalendarModel cal=new CalendarModel();
-	
+	CalendarModel cal = new CalendarModel();
+
 	@Test
 	public void testmonth() {
-		int currentmonth=5;
-		int testMonth=cal.getCurrentMonth();
+		int currentmonth = 5;
+		int testMonth = cal.getCurrentMonth();
 		assertEquals(testMonth, currentmonth);
 	}
 
