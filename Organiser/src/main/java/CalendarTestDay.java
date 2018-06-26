@@ -8,7 +8,7 @@ public class CalendarTestDay {
 	
 	@Test
 	public void testday() {
-		int currentday=25;
+		int currentday=26;
 		int testDay=cal.getSelectedDay();
 		assertEquals(testDay, currentday);
 	}

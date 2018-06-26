@@ -8,7 +8,7 @@ public class CalendarTestMonth {
 	
 	@Test
 	public void testmonth() {
-		int currentmonth=6;
+		int currentmonth=5;
 		int testMonth=cal.getCurrentMonth();
 		assertEquals(testMonth, currentmonth);
 	}

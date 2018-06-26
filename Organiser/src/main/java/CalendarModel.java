@@ -77,7 +77,7 @@ public class CalendarModel {
      * ZWROT OBECNEGO MIESIACA
      */
     public int getCurrentMonth() {
-        return cal.get(Calendar.MONTH) +1;
+        return cal.get(Calendar.MONTH);
     }
 
     /**

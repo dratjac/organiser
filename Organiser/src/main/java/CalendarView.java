@@ -144,7 +144,7 @@ public class CalendarView implements ChangeListener {
         frame.add(dayViewPanel);
         frame.add(quit);
         frame.setLayout(new FlowLayout());
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
