@@ -9,10 +9,6 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import javax.swing.RepaintManager;
  
-/**
- *
- * @author User
- */
 public class PrintSupport implements Printable {
  
     private Component print_component;

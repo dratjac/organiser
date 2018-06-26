@@ -38,6 +38,8 @@ public class Start {
 	UndoManager manager = new UndoManager();
 	
 	File plik;
+	Boolean flag=true;
+	String test="test.txt";
 	
 
 	/**
@@ -92,7 +94,15 @@ public class Start {
 			iOtworz = new JMenuItem("Otwórz...");
 			iOtworz.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					otworz();
+					try {
+					otworz(true);
+					}
+					catch(FileNotFoundException f) { 
+						f.printStackTrace();
+					}
+						
+						
+					
 				}
 			});
 			
@@ -270,22 +280,39 @@ public class Start {
 		
 	}
 	
-	private void otworz()
+	private void otworz(Boolean flag) throws FileNotFoundException
 	{
+		if(flag==true) {
 		notatnik.setText("");
 		JFileChooser fc = new JFileChooser();
 		if (fc.showOpenDialog(frame)==JFileChooser.APPROVE_OPTION)
 		{
 			plik = fc.getSelectedFile();
-			try {
+			
 				Scanner scaner = new Scanner(plik);
 				while (scaner.hasNext()) notatnik.append(scaner.nextLine()+"\n");
 				scaner.close();
 				frame.setTitle(fc.getName(plik));
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
+			
+			
 		}
+		}
+		else {
+			
+			
+			plik = new File(test);
+			Scanner scaner = new Scanner(plik);
+			while (scaner.hasNext()) notatnik.append(scaner.nextLine()+"\n");
+			scaner.close();
+			frame.setTitle(test);
+			
+			
+		}
+		
+		
+		
+		
+		
 	}
 	
 	private void zapisz()
