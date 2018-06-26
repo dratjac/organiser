@@ -1,14 +1,13 @@
 package currencyConverter;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-import org.junit.jupiter.api.Test;
-
-class ConversionTest {
+import org.junit.Test;
+public class ConversionTest {
 
 
 	@Test
-	void testConversion() {
+	public void testConversion() {
 		//Testing catched exceptions//
 		
 		String currentUSDtoPLN = "3.71";
